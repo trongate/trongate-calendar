@@ -10,70 +10,7 @@
 
 
     <div id="testDiv">
-        <input type="text" onclick="initPopup()">
-        <div class="tg-datepicker">
-            <div class="datepicker-head">
-                <div><div class="popup-arrow"><span class="flip-arrow">&#9656;</span></div></div>
-                <div>December 1984</div>
-                <div><div class="popup-arrow">&#9656;</div></div>
-            </div>
-            <table>
-                <tr>
-                    <th>Mo</th>
-                    <th>Tu</th>
-                    <th>We</th>
-                    <th>Th</th>
-                    <th>Fr</th>
-                    <th>Sa</th>
-                    <th>Su</th>
-                </tr>
-                <tr>
-                    <td class="empty-day">&nbsp;</td>
-                    <td class="empty-day">&nbsp;</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td class="current-day">3</td>
-                    <td class="unavailable-day">4</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                </tr>
-                <tr>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                </tr>
-                <tr>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                    <td>xx</td>
-                </tr>
-                <tr>
-                    <td>29</td>
-                    <td>30</td>
-                    <td>31</td>
-                    <td class="empty-day">&nbsp;</td>
-                    <td class="empty-day">&nbsp;</td>
-                    <td class="empty-day">&nbsp;</td>
-                    <td class="empty-day">&nbsp;</td>
-                </tr>
-            </table>
-        </div>
+        <input id="whatever" type="text" onclick="initPopup('whatever')">
     </div>
 
 
@@ -136,8 +73,244 @@ var d = new Date();
 var n = d.getDay();
 console.log('The day is ' + n);
 
-function initPopup() {
-    alert("popup");
+function initPopup(elId) {
+
+    // var newNode = document.createElement("div");
+    // var newContent = document.createTextNode("Hi there and greetings!");
+    // newNode.appendChild(newContent);
+
+    // var referenceNode = document.getElementById(elId);
+    // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    
+    var referenceNode = document.getElementById(elId);
+
+    var newPopupCalendar = document.createElement("div");
+    newPopupCalendar.setAttribute("class", "tg-datepicker");
+
+    referenceNode.parentNode.insertBefore(newPopupCalendar, referenceNode.nextSibling);
+
+    var calendarHead = document.createElement("div");
+
+    calendarHead.setAttribute("class", "datepicker-head");
+
+    var calendarHeadLeft = document.createElement("div");
+    calendarHead.appendChild(calendarHeadLeft);
+
+    var calendarArrowDivLeft = document.createElement("div");
+    calendarArrowDivLeft.setAttribute("class", "popup-arrow");
+
+    var flipArrowSpan = document.createElement("span");
+    flipArrowSpan.setAttribute("class", "flip-arrow");
+    var calendarNavArrowLeft = document.createTextNode("▸");
+    flipArrowSpan.appendChild(calendarNavArrowLeft);
+
+    calendarArrowDivLeft.appendChild(flipArrowSpan);
+    calendarHeadLeft.appendChild(calendarArrowDivLeft);
+
+    var calendarHeadCenter = document.createElement("div");
+    var calendarHeadline = document.createTextNode("December 1984");
+    calendarHeadCenter.appendChild(calendarHeadline);
+    
+    calendarHead.appendChild(calendarHeadCenter);
+
+    var calendarHeadRight = document.createElement("div");
+    var calendarArrowDivRight = document.createElement("div");
+    calendarArrowDivRight.setAttribute("class", "popup-arrow");
+
+    var calendarNavArrowRight = document.createTextNode("▸");
+    calendarArrowDivRight.appendChild(calendarNavArrowRight);
+    calendarHeadRight.appendChild(calendarArrowDivRight);
+
+
+    calendarHead.appendChild(calendarHeadRight);
+    
+    newPopupCalendar.appendChild(calendarHead);
+
+    //generate table
+    var calendarTbl = document.createElement("table");
+
+    //create the top row
+    var calendarTblTopRow = document.createElement("tr");
+
+    var calendarTblTh = document.createElement("th");
+    var calendarTblThTxt = document.createTextNode("Mon");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Tue");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Wed");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Thu");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Fri");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Sat");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTblTh = document.createElement("th");
+    calendarTblThTxt = document.createTextNode("Sun");
+    calendarTblTh.appendChild(calendarTblThTxt);
+    calendarTblTopRow.appendChild(calendarTblTh);
+
+    calendarTbl.appendChild(calendarTblTopRow);
+
+    //create a week row
+    var calendarWeekRow = document.createElement("tr");
+
+    var calendarTblTd = document.createElement("td");
+    var calendarTblTdTxt = document.createTextNode(" ");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarTblTd.setAttribute("class", "empty-day");
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode(" ");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarTblTd.setAttribute("class", "empty-day");
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode("1");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode("2");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode("3");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarTblTd.setAttribute("class", "current-day");
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode("4");
+    calendarTblTd.appendChild(calendarTblTdTxt); 
+    calendarTblTd.setAttribute("class", "unavailable-day");
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTblTd = document.createElement("td");
+    calendarTblTdTxt = document.createTextNode("5");
+    calendarTblTd.appendChild(calendarTblTdTxt);
+    calendarWeekRow.appendChild(calendarTblTd);
+
+    calendarTbl.appendChild(calendarWeekRow);
+
+    //generate three sample week rows
+    for (var i = 0; i < 3; i++) {
+        
+        //create a week row
+        calendarWeekRow = document.createElement("tr");
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt); 
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("xx");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTbl.appendChild(calendarWeekRow);
+
+
+
+    }
+
+    //sample btm row
+        //create a week row
+        calendarWeekRow = document.createElement("tr");
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("29");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("30");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode("31");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode(" ");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarTblTd.setAttribute("class", "empty-day");
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode(" ");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarTblTd.setAttribute("class", "empty-day");
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode(" ");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarTblTd.setAttribute("class", "empty-day");
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTblTd = document.createElement("td");
+        calendarTblTdTxt = document.createTextNode(" ");
+        calendarTblTd.appendChild(calendarTblTdTxt);
+        calendarTblTd.setAttribute("class", "empty-day");
+        calendarWeekRow.appendChild(calendarTblTd);
+
+        calendarTbl.appendChild(calendarWeekRow);
+
+
+
+    newPopupCalendar.appendChild(calendarTbl);
+
+
+
 }
 
 
@@ -156,7 +329,8 @@ function initPopup() {
 .tg-datepicker {
     width: 400px;
     border: 1px #36658c solid;
-    font-family: Tahoma, Geneva, sans-serif;
+    font-family: Lucida console;
+    letter-spacing: 1px;
 }
 
 table {
@@ -189,7 +363,8 @@ td:hover:not(.empty-day):not(.unavailable-day):not(.current-day) {
 
 .unavailable-day {
     background-color: #fff;
-    color: #555;
+    color: silver;
+    cursor: default !important;
 }
 
 .unavailabe-day, .empty-day {
