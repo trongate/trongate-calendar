@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Headline</h1>
+
+
+    <div id="testDiv">
+        <input type="text" onclick="initPopup()">
+        <div class="tg-datepicker">
+            <div class="datepicker-head">
+                <div><div class="popup-arrow"><span class="flip-arrow">&#9656;</span></div></div>
+                <div>December 1984</div>
+                <div><div class="popup-arrow">&#9656;</div></div>
+            </div>
+            <table>
+                <tr>
+                    <th>Mo</th>
+                    <th>Tu</th>
+                    <th>We</th>
+                    <th>Th</th>
+                    <th>Fr</th>
+                    <th>Sa</th>
+                    <th>Su</th>
+                </tr>
+                <tr>
+                    <td class="empty-day">&nbsp;</td>
+                    <td class="empty-day">&nbsp;</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td class="current-day">3</td>
+                    <td class="unavailable-day">4</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                </tr>
+                <tr>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                </tr>
+                <tr>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                </tr>
+                <tr>
+                    <td>29</td>
+                    <td>30</td>
+                    <td>31</td>
+                    <td class="empty-day">&nbsp;</td>
+                    <td class="empty-day">&nbsp;</td>
+                    <td class="empty-day">&nbsp;</td>
+                    <td class="empty-day">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <ul>
+        <li>How many days in each month   DONE</li>
+        <li>On what day does the month start? DONE</li>
+        <li>Div positioning (up)</li>
+    </ul>
+<p style="height: 900px;">
+    &nbsp;
+</p>
+
+<script>
+//please change these settings to suit your language
+var dayNames = [
+    "Monday", 
+    "Tuesday", 
+    "Wednesday", 
+    "Thursday", 
+    "Friday", 
+    "Saturday", 
+    "Sunday"
+];
+
+var monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+console.log(dayNames);
+console.log(monthNames);
+
+
+var getDaysInMonth = function(month,year) {
+  // Here January is 1 based
+  //Day 0 is the last day in the previous month
+ return new Date(year, month, 0).getDate();
+// Here January is 0 based
+// return new Date(year, month+1, 0).getDate();
+};
+console.log(getDaysInMonth(2, 1976));
+console.log(getDaysInMonth(11, 2012));
+console.log(getDaysInMonth(9, 2012));
+console.log(getDaysInMonth(12, 2012));
+
+
+var d = new Date();
+var n = d.getDay();
+console.log('The day is ' + n);
+
+function initPopup() {
+    alert("popup");
+}
+
+
+</script>
+
+<style>
+#testDiv {
+    width: 450px;
+    height: 150px;
+    left: 367px;
+    top: 32%;
+    margin-top: 10em;
+    position: relative;
+}
+
+.tg-datepicker {
+    width: 400px;
+    border: 1px #36658c solid;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: #333;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 0.7em;
+    text-align: center;
+}
+
+td {
+    background-color: #4682b424;
+    border: 1px #829eb59e solid;
+}
+
+td:hover:not(.empty-day):not(.unavailable-day):not(.current-day) {
+    background-color: #cfdfec;
+}
+
+.empty-day {
+    background-color: white;
+    border: 1px white solid;
+}
+
+.unavailable-day {
+    background-color: #fff;
+    color: #555;
+}
+
+.unavailabe-day, .empty-day {
+    cursor: default !important;
+}
+
+.current-day {
+    background-color: SteelBlue;
+    color: white;
+}
+
+.current-day:hover {
+    background-color: #346893;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+tr:hover, tr:nth-child(odd):hover {
+    bxackground-color: #fdfdea;
+}
+
+tr:nth-child(odd) {
+    bxackground-color: #f3f3f3;
+}
+
+.datepicker-head {
+    background-color: SteelBlue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 6px;
+}
+
+.datepicker-head > div:nth-child(odd) {
+    cursor: pointer;
+}
+
+.datepicker-head > div:nth-child(2) {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+}
+
+.popup-arrow {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: SteelBlue;
+}
+
+.flip-arrow {
+    transform: rotate(180deg);
+    top: 1px;
+    left: 0px;
+    position: relative;
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
