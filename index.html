@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Headline</h1>
-
+    <button onclick="destroyCalendars()">Destroy Calendars</button>
 
     <div id="testDiv">
         <input id="whatever" type="text" onclick="initPopup('whatever')">
@@ -52,6 +52,8 @@ var monthNames = [
     "December"
 ];
 
+var calendarCanvas = 'large';
+
 console.log(dayNames);
 console.log(monthNames);
 
@@ -74,6 +76,8 @@ var n = d.getDay();
 console.log('The day is ' + n);
 
 function initPopup(elId) {
+
+    destroyCalendars();
 
     // var newNode = document.createElement("div");
     // var newContent = document.createTextNode("Hi there and greetings!");
@@ -255,12 +259,9 @@ function initPopup(elId) {
         calendarWeekRow.appendChild(calendarTblTd);
 
         calendarTbl.appendChild(calendarWeekRow);
-
-
-
     }
 
-    //sample btm row
+        //sample btm row
         //create a week row
         calendarWeekRow = document.createElement("tr");
 
@@ -304,16 +305,34 @@ function initPopup(elId) {
         calendarWeekRow.appendChild(calendarTblTd);
 
         calendarTbl.appendChild(calendarWeekRow);
-
-
-
-    newPopupCalendar.appendChild(calendarTbl);
-
-
-
+        newPopupCalendar.appendChild(calendarTbl);
 }
 
+function destroyCalendars() {
+    var tgCalendars = document.getElementsByClassName("tg-datepicker");
+    while(tgCalendars.length>0) {
+        tgCalendars[0].remove();
+    }
+}
 
+function watchScreenSize() {
+
+    var intViewportWidth = window.innerWidth;
+    var intViewportHeight = window.innerHeight;
+    console.log(`width is ${intViewportWidth} and height is ${intViewportHeight}`);
+
+    if (intViewportWidth<700) {
+        calendarCanvas = 'small';
+    } else {
+        calendarCanvas = 'large';
+    }
+
+    destroyCalendars();
+    console.log('the canvas size is ' + calendarCanvas);
+}
+
+window.addEventListener("resize", watchScreenSize);
+watchScreenSize();
 </script>
 
 <style>
