@@ -86,8 +86,15 @@ function initPopup(elId) {
         var referenceNode = document.getElementById(elId);
         referenceNode.parentNode.insertBefore(newPopupCalendar, referenceNode.nextSibling);
     } else {
+
+        //create an overlay div
+        var overlayDiv = document.createElement("div");
+        overlayDiv.setAttribute("id", "tg-calendar-overlay");
+        var pageBody = document.getElementsByTagName("body")[0];
+        pageBody.appendChild(overlayDiv);
+
         newPopupCalendar.classList.add("tg-datepicker-small-canvas");
-        var referenceNode = document.getElementById("tg-calendar-overlay");
+        var referenceNode = overlayDiv;
 
         referenceNode.appendChild(newPopupCalendar);
     }
@@ -312,7 +319,10 @@ function initPopup(elId) {
         calendarTbl.appendChild(calendarWeekRow);
         newPopupCalendar.appendChild(calendarTbl);
 
-        adjustCalendarHeight();
+        if (calendarCanvas == 'small') {
+            adjustCalendarHeight();
+        }
+        
 }
 
 function adjustCalendarHeight() {
@@ -344,26 +354,39 @@ function increaseCellPadding(tblRow) {
 }
 
 function destroyCalendars() {
+
     var tgCalendars = document.getElementsByClassName("tg-datepicker");
-    while(tgCalendars.length>0) {
-        tgCalendars[0].remove();
+
+    if (calendarCanvas == 'small') {
+
+        if (tgCalendars.length>0) {
+            document.getElementById("tg-calendar-overlay").remove();
+        }
+        
+    } else {
+
+        while(tgCalendars.length>0) {
+            tgCalendars[0].remove();
+        }
+
     }
+
 }
 
 function watchScreenSize() {
-
+    console.log('WATCHING');
     var intViewportWidth = window.innerWidth;
     var intViewportHeight = window.innerHeight;
     console.log(`width is ${intViewportWidth} and height is ${intViewportHeight}`);
 
-    if (intViewportWidth<700) {
+    if (intViewportWidth<600) {
         calendarCanvas = 'small';
     } else {
         calendarCanvas = 'large';
     }
 
     destroyCalendars();
-    console.log('the canvas size is ' + calendarCanvas);
+    console.log('the canvas size is ' + calendarCanvas + ' since viewport width is ' + intViewportWidth);
 }
 
 window.addEventListener("resize", watchScreenSize);
@@ -371,9 +394,60 @@ watchScreenSize();
 
 setTimeout(() => {
 
-    initPopup('x');
+    console.log("initing popup");
+    initPopup('whatever');
 
-}, 3000);
+}, 2000);
+
+setTimeout(() => {
+
+    destroyCalendars();
+
+}, 4000);
+
+function childOf( node, ancestor ) {
+    var child = node;
+    while (child !== null) {
+        if (child === ancestor) return true;
+        child = child.parentNode;
+    }
+    return false;   
+}
+
+function attemptDestroy(ev) {
+
+    var tgCalendars = document.getElementsByClassName("tg-datepicker");
+
+    if (tgCalendars.length>0) {
+        var clickedEl = ev.target;
+        var targetAncestor = tgCalendars[0];
+        var isChild = childOf(clickedEl, targetAncestor);
+
+        if (isChild !== true) {
+            destroyCalendars();
+        }
+    }
+
+}
+
+
+
+var pageBody = document.getElementsByTagName("body")[0];
+pageBody.addEventListener("click", (ev) => {
+
+    if (ev.target.id !== 'whatever') {
+        attemptDestroy(ev);
+    }
+
+    
+
+    // javascript check if clicked element is inside target div
+
+
+
+
+
+});  
 </script>
 
 <style>
@@ -396,6 +470,7 @@ setTimeout(() => {
     font-family: Lucida console;
     letter-spacing: 1px;
     background-color: white;
+    position: absolute;
 }
 
 .tg-datepicker-small-canvas {
@@ -503,7 +578,7 @@ tr:nth-child(odd) {
     position:fixed;
     top:0;
     left:0;
-    background:rgba(0,0,0,0.6);
+    background:rgba(0,0,0,0.8);
     z-index:5;
     width:100%;
     height:100%;
@@ -527,7 +602,7 @@ tr:nth-child(odd) {
 
 
 
-<div id="tg-calendar-overlay"></div>
+
 
 
 </body>
