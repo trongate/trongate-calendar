@@ -79,20 +79,21 @@ function initPopup(elId) {
 
     destroyCalendars();
 
-    // var newNode = document.createElement("div");
-    // var newContent = document.createTextNode("Hi there and greetings!");
-    // newNode.appendChild(newContent);
-
-    // var referenceNode = document.getElementById(elId);
-    // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-    
-    var referenceNode = document.getElementById(elId);
-
     var newPopupCalendar = document.createElement("div");
     newPopupCalendar.setAttribute("class", "tg-datepicker");
 
-    referenceNode.parentNode.insertBefore(newPopupCalendar, referenceNode.nextSibling);
+    if (calendarCanvas == 'large') {
+        var referenceNode = document.getElementById(elId);
+        referenceNode.parentNode.insertBefore(newPopupCalendar, referenceNode.nextSibling);
+    } else {
+        newPopupCalendar.classList.add("tg-datepicker-small-canvas");
+        var referenceNode = document.getElementById("tg-calendar-overlay");
 
+        referenceNode.appendChild(newPopupCalendar);
+    }
+
+    //use javascript to select body
+    
     var calendarHead = document.createElement("div");
 
     calendarHead.setAttribute("class", "datepicker-head");
@@ -135,6 +136,7 @@ function initPopup(elId) {
 
     //create the top row
     var calendarTblTopRow = document.createElement("tr");
+    calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
 
     var calendarTblTh = document.createElement("th");
     var calendarTblThTxt = document.createTextNode("Mon");
@@ -175,6 +177,7 @@ function initPopup(elId) {
 
     //create a week row
     var calendarWeekRow = document.createElement("tr");
+    calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
     var calendarTblTd = document.createElement("td");
     var calendarTblTdTxt = document.createTextNode(" ");
@@ -222,6 +225,7 @@ function initPopup(elId) {
         
         //create a week row
         calendarWeekRow = document.createElement("tr");
+        calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
         calendarTblTd = document.createElement("td");
         calendarTblTdTxt = document.createTextNode("xx");
@@ -264,6 +268,7 @@ function initPopup(elId) {
         //sample btm row
         //create a week row
         calendarWeekRow = document.createElement("tr");
+        calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
         calendarTblTd = document.createElement("td");
         calendarTblTdTxt = document.createTextNode("29");
@@ -306,6 +311,36 @@ function initPopup(elId) {
 
         calendarTbl.appendChild(calendarWeekRow);
         newPopupCalendar.appendChild(calendarTbl);
+
+        adjustCalendarHeight();
+}
+
+function adjustCalendarHeight() {
+    var targetCalendar = document.getElementsByClassName("tg-datepicker")[0];
+    var intViewportWidth = window.innerWidth;
+    var intViewportHeight = window.innerHeight;
+
+    if (intViewportWidth<intViewportHeight) {
+        //we should make the calendar height equal to the calendar width
+        //targetCalendar.style.height = intViewportWidth*0.92 + 'px';
+        
+        //fetch all of the popup calendar rows
+        var allPopupTblRows = document.getElementsByClassName("tg-datepicker-row");
+        for (var i = 0; i < allPopupTblRows.length; i++) {
+            increaseCellPadding(allPopupTblRows[i])
+        }
+
+    } else {
+        //we should make the calendar width equal to the calendar height
+        targetCalendar.style.maxWidth = '350px';
+    }
+}
+
+function increaseCellPadding(tblRow) {
+    var rowCells = tblRow.children;
+    for (var i = 0; i < rowCells.length; i++) {
+        rowCells[i].style.padding = '1.5em 0.7em';
+    }
 }
 
 function destroyCalendars() {
@@ -333,10 +368,16 @@ function watchScreenSize() {
 
 window.addEventListener("resize", watchScreenSize);
 watchScreenSize();
+
+setTimeout(() => {
+
+    initPopup('x');
+
+}, 3000);
 </script>
 
 <style>
-#testDiv {
+#txestDivx {
     width: 450px;
     height: 150px;
     left: 367px;
@@ -345,11 +386,21 @@ watchScreenSize();
     position: relative;
 }
 
+#testDiv {
+    z-index: 99;
+}
+
 .tg-datepicker {
     width: 400px;
     border: 1px #36658c solid;
     font-family: Lucida console;
     letter-spacing: 1px;
+    background-color: white;
+}
+
+.tg-datepicker-small-canvas {
+    width: 96%;
+    font-size: 0.7em;
 }
 
 table {
@@ -448,6 +499,18 @@ tr:nth-child(odd) {
     position: relative;
 }
 
+#tg-calendar-overlay {
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    z-index:5;
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 
 </style>
@@ -464,7 +527,7 @@ tr:nth-child(odd) {
 
 
 
-
+<div id="tg-calendar-overlay"></div>
 
 
 </body>
