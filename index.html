@@ -182,6 +182,9 @@ tr:nth-child(odd) {
 
 <script>
 var currentDate = new Date('1956-10-15');
+var unavailableDays = []; //add your own days as an array
+
+
 //var localeString = 'ru-RU';
 //var localeString = 'en-GB';
 var localeString = 'zh-HK';
@@ -307,6 +310,20 @@ function initPopup(elId) {
 
     //generate table
     var calendarTbl = document.createElement("table");
+
+    populateCalendarTbl(newPopupCalendar, calendarTbl);
+
+        if (calendarCanvas == 'small') {
+            adjustCalendarHeight();
+        }
+        
+}
+
+function populateCalendarTbl(popupCalendar, calendarTbl) {
+
+
+  //  getDaysInMonth = function(month,year)
+  // const FirstDay = birthday.getDay();
 
     //create the top row
     var calendarTblTopRow = document.createElement("tr");
@@ -484,13 +501,10 @@ function initPopup(elId) {
         calendarWeekRow.appendChild(calendarTblTd);
 
         calendarTbl.appendChild(calendarWeekRow);
-        newPopupCalendar.appendChild(calendarTbl);
+        popupCalendar.appendChild(calendarTbl);
 
-        if (calendarCanvas == 'small') {
-            adjustCalendarHeight();
-        }
-        
 }
+
 
 function adjustCalendarHeight() {
     var targetCalendar = document.getElementsByClassName("tg-datepicker")[0];
