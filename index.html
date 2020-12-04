@@ -9,8 +9,10 @@
     <h1>Headline</h1>
     <button onclick="destroyCalendars()">Destroy Calendars</button>
 
+    <button onclick="populateInput()">Populate Input</button>
+
     <div id="testDiv">
-        <input id="whatever" type="text" onclick="initPopup('whatever')">
+        <input id="whatever" class="tg-datepicker-input" type="text" onclick="initPopup('whatever')">
     </div>
 
 
@@ -25,7 +27,170 @@
     &nbsp;
 </p>
 
+
+
+<style>
+
+
+#testDiv {
+    z-index: 99;
+}
+
+.tg-datepicker {
+    width: 282px;
+    border: 1px #36658c solid;
+    font-family: Lucida console;
+    letter-spacing: 1px;
+    background-color: white;
+    position: absolute;
+}
+
+.tg-datepicker-small-canvas {
+    width: 96%;
+    font-size: 0.7em;
+}
+
+.tg-datepicker-small-canvas .datepicker-head > div:nth-child(2) {
+    font-size: 1.4em;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: #333;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 0.3em 0;
+    text-align: center;
+}
+
+td {
+    background-color: #4682b424;
+    border: 1px #829eb59e solid;
+}
+
+td:hover:not(.empty-day):not(.unavailable-day):not(.current-day) {
+    background-color: #cfdfec;
+}
+
+.empty-day {
+    background-color: white;
+    border: 1px white solid;
+}
+
+.unavailable-day {
+    background-color: #fff;
+    color: silver;
+    cursor: default !important;
+}
+
+.unavailabe-day, .empty-day {
+    cursor: default !important;
+}
+
+.current-day {
+    background-color: SteelBlue;
+    color: white;
+}
+
+.current-day:hover {
+    background-color: #346893;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+tr:hover, tr:nth-child(odd):hover {
+    bxackground-color: #fdfdea;
+}
+
+tr:nth-child(odd) {
+    bxackground-color: #f3f3f3;
+}
+
+.datepicker-head {
+    background-color: SteelBlue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 6px;
+}
+
+.datepicker-head > div:nth-child(odd) {
+    cursor: pointer;
+}
+
+.datepicker-head > div:nth-child(2) {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+}
+
+.popup-arrow {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: SteelBlue;
+}
+
+.flip-arrow {
+    transform: rotate(180deg);
+    top: 1px;
+    left: 0px;
+    position: relative;
+}
+
+#tg-calendar-overlay {
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.8);
+    z-index:5;
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
+var currentDate = new Date('1956-10-15');
+//var localeString = 'ru-RU';
+//var localeString = 'en-GB';
+var localeString = 'zh-HK';
+
+var dateFormatObj = {
+    dateStyle: 'long'
+}
+var makeInputDisabled = true;
+
 //please change these settings to suit your language
 var dayNames = [
     "Monday", 
@@ -109,6 +274,7 @@ function initPopup(elId) {
     calendarHead.appendChild(calendarHeadLeft);
 
     var calendarArrowDivLeft = document.createElement("div");
+    calendarArrowDivLeft.setAttribute("onclick", "changeMonth('down')");
     calendarArrowDivLeft.setAttribute("class", "popup-arrow");
 
     var flipArrowSpan = document.createElement("span");
@@ -120,13 +286,14 @@ function initPopup(elId) {
     calendarHeadLeft.appendChild(calendarArrowDivLeft);
 
     var calendarHeadCenter = document.createElement("div");
-    var calendarHeadline = document.createTextNode("December 1984");
+    var calendarHeadline = document.createTextNode("December 2020");
     calendarHeadCenter.appendChild(calendarHeadline);
     
     calendarHead.appendChild(calendarHeadCenter);
 
     var calendarHeadRight = document.createElement("div");
     var calendarArrowDivRight = document.createElement("div");
+    calendarArrowDivRight.setAttribute("onclick", "changeMonth('up')");
     calendarArrowDivRight.setAttribute("class", "popup-arrow");
 
     var calendarNavArrowRight = document.createTextNode("▸");
@@ -444,168 +611,123 @@ pageBody.addEventListener("click", (ev) => {
         attemptDestroy(ev);
     }
 
-    
-
     // javascript check if clicked element is inside target div
 
+});
+
+function createNiceDate() {
+    // Ref:  https://www.w3schools.com/jsref/jsref_tolocalestring.asp
+    // var niceDate = window.navigator.language;
+
+    if (typeof(dateFormatObj) !== 'undefined') {
+        var niceDate = currentDate.toLocaleString(localeString, dateFormatObj);
+    } else {
+       
+        var m = currentDate.getMonth()+1;
+        var d =  currentDate.getDate();
+
+        if (m < 10) {
+            m = '0' + m
+        }
+
+        if (d < 10) {
+            d = '0' + d
+        }
+
+        var niceDate = m + '/' + d + '/' + currentDate.getFullYear();
+
+    }
+
+//     if (!dateFormatObj) {
+//         // var dateFormatObj = {
+//         //     dateStyle: "short"
+//         // }
+
+//         var niceDate = currentDate(YYYY-MM-DD);
+
+//     } else {
+// //        var niceDate = currentDate.toLocaleString(localeString, dateFormatObj);
+
+
+    
+    return niceDate;
+}
+
+function populateInput(elId) {
+    //get a nice date based off of the currentDate
+    var niceDate = createNiceDate();
+    document.getElementById(elId).value = niceDate;
+}
+
+if (makeInputDisabled == true) {
+
+    var datepickerInputs = document.getElementsByClassName("tg-datepicker-input");
+    for (var i = 0; i < datepickerInputs.length; i++) {
+        //datepickerInputs[i].disabled = true;
+
+
+        var originalValue = '';
+        datepickerInputs[i].addEventListener("mousedown", (ev) => {
+            var targetEl = document.getElementById(ev.target.id);
+            originalValue = targetEl.value;
+            console.log('orig is ' + originalValue);
+        });
+
+        datepickerInputs[i].addEventListener("blur", (ev) => {
+            var targetEl = document.getElementById(ev.target.id);
+            targetEl.value = originalValue;
+        });
+
+        datepickerInputs[i].addEventListener("keypress", (ev) => {
+            var targetEl = document.getElementById(ev.target.id);
+            targetEl.value = originalValue;
+        });
+
+     
 
 
 
+    }
 
-});  
+}
+
+function changeMonth(direction) {
+
+    var m = currentDate.getMonth();
+
+    if (direction == 'down') {
+        var newM = m-1;
+        currentDate.setMonth(newM);
+    } else {
+        var newM = m+1;
+        currentDate.setMonth(newM);
+    }
+
+    populateInput('whatever');
+    setTimeout(() => {
+
+        var baseElement = document.querySelector(".datepicker-head");
+        var targetDiv = baseElement.querySelector("div:nth-child(2)");
+
+        //javascript get month and year from date object
+
+        var dObj = {
+            month: 'long'
+        }
+
+        var niceDate = currentDate.toLocaleString(localeString, dObj);
+
+        targetDiv.innerHTML = niceDate;
+        targetDiv.innerHTML+= ' ' + currentDate.getFullYear();
+
+
+    }, 1);
+    //
+    
+}
+
+
+populateInput('whatever');
 </script>
-
-<style>
-
-
-#testDiv {
-    z-index: 99;
-}
-
-.tg-datepicker {
-    width: 282px;
-    border: 1px #36658c solid;
-    font-family: Lucida console;
-    letter-spacing: 1px;
-    background-color: white;
-    position: absolute;
-}
-
-.tg-datepicker-small-canvas {
-    width: 96%;
-    font-size: 0.7em;
-}
-
-.tg-datepicker-small-canvas .datepicker-head > div:nth-child(2) {
-    font-size: 1.4em;
-}
-
-table {
-    width: 100%;
-}
-
-th {
-    color: #333;
-    font-weight: bold;
-}
-
-th, td {
-    padding: 0.3em 0;
-    text-align: center;
-}
-
-td {
-    background-color: #4682b424;
-    border: 1px #829eb59e solid;
-}
-
-td:hover:not(.empty-day):not(.unavailable-day):not(.current-day) {
-    background-color: #cfdfec;
-}
-
-.empty-day {
-    background-color: white;
-    border: 1px white solid;
-}
-
-.unavailable-day {
-    background-color: #fff;
-    color: silver;
-    cursor: default !important;
-}
-
-.unavailabe-day, .empty-day {
-    cursor: default !important;
-}
-
-.current-day {
-    background-color: SteelBlue;
-    color: white;
-}
-
-.current-day:hover {
-    background-color: #346893;
-}
-
-td:hover {
-    cursor: pointer;
-}
-
-tr:hover, tr:nth-child(odd):hover {
-    bxackground-color: #fdfdea;
-}
-
-tr:nth-child(odd) {
-    bxackground-color: #f3f3f3;
-}
-
-.datepicker-head {
-    background-color: SteelBlue;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 6px;
-}
-
-.datepicker-head > div:nth-child(odd) {
-    cursor: pointer;
-}
-
-.datepicker-head > div:nth-child(2) {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: white;
-}
-
-.popup-arrow {
-    background-color: white;
-    height: 24px;
-    width: 24px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: SteelBlue;
-}
-
-.flip-arrow {
-    transform: rotate(180deg);
-    top: 1px;
-    left: 0px;
-    position: relative;
-}
-
-#tg-calendar-overlay {
-    position:fixed;
-    top:0;
-    left:0;
-    background:rgba(0,0,0,0.8);
-    z-index:5;
-    width:100%;
-    height:100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
