@@ -19,9 +19,23 @@
 
 <script>
 
-    //javascript add one month onto date object
+var firstDate = new Date('2020-12-10');
 
-    var currentDate = new Date(2000, 2, 15);  //javascript get current date and time
+
+
+var currentDate = new Date;
+var currentDateAlt = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0);
+console.log(currentDate);
+
+if (firstDate < currentDateAlt) {
+    console.log('in the past');
+} else {
+    console.log('in the future')
+}
+//Fri Dec 04 2020 00:00:00 GMT+0000
+//Fri Dec 04 2020 00:00:00 GMT+0000
+
+console.log(firstDate);
 
 
 </script>

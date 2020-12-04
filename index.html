@@ -181,13 +181,12 @@ tr:nth-child(odd) {
 
 
 <script>
-var currentDate = new Date('1956-10-15');
+var currentDate = new Date;
 var unavailableDays = []; //add your own days as an array
 
-
 //var localeString = 'ru-RU';
-//var localeString = 'en-GB';
-var localeString = 'zh-HK';
+var localeString = 'en-GB';
+//var localeString = 'zh-HK';
 
 var dateFormatObj = {
     dateStyle: 'long'
@@ -226,17 +225,13 @@ console.log(dayNames);
 console.log(monthNames);
 
 
-var getDaysInMonth = function(month,year) {
-  // Here January is 1 based
-  //Day 0 is the last day in the previous month
- return new Date(year, month, 0).getDate();
-// Here January is 0 based
-// return new Date(year, month+1, 0).getDate();
-};
-console.log(getDaysInMonth(2, 1976));
-console.log(getDaysInMonth(11, 2012));
-console.log(getDaysInMonth(9, 2012));
-console.log(getDaysInMonth(12, 2012));
+function getNumDaysInMonth() {
+  var theMonth = currentDate.getMonth()+1; // Here January is 0 based
+  var theYear = currentDate.getFullYear();
+  return new Date(theYear, theMonth, 0).getDate();
+}
+
+
 
 
 var d = new Date();
@@ -311,20 +306,6 @@ function initPopup(elId) {
     //generate table
     var calendarTbl = document.createElement("table");
 
-    populateCalendarTbl(newPopupCalendar, calendarTbl);
-
-        if (calendarCanvas == 'small') {
-            adjustCalendarHeight();
-        }
-        
-}
-
-function populateCalendarTbl(popupCalendar, calendarTbl) {
-
-
-  //  getDaysInMonth = function(month,year)
-  // const FirstDay = birthday.getDay();
-
     //create the top row
     var calendarTblTopRow = document.createElement("tr");
     calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
@@ -366,139 +347,213 @@ function populateCalendarTbl(popupCalendar, calendarTbl) {
 
     calendarTbl.appendChild(calendarTblTopRow);
 
-    //create a week row
-    var calendarWeekRow = document.createElement("tr");
-    calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
-    var calendarTblTd = document.createElement("td");
-    var calendarTblTdTxt = document.createTextNode(" ");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarTblTd.setAttribute("class", "empty-day");
-    calendarWeekRow.appendChild(calendarTblTd);
 
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode(" ");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarTblTd.setAttribute("class", "empty-day");
-    calendarWeekRow.appendChild(calendarTblTd);
+    populateCalendarTbl(newPopupCalendar, calendarTbl);
 
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode("1");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarWeekRow.appendChild(calendarTblTd);
-
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode("2");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarWeekRow.appendChild(calendarTblTd);
-
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode("3");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarTblTd.setAttribute("class", "current-day");
-    calendarWeekRow.appendChild(calendarTblTd);
-
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode("4");
-    calendarTblTd.appendChild(calendarTblTdTxt); 
-    calendarTblTd.setAttribute("class", "unavailable-day");
-    calendarWeekRow.appendChild(calendarTblTd);
-
-    calendarTblTd = document.createElement("td");
-    calendarTblTdTxt = document.createTextNode("5");
-    calendarTblTd.appendChild(calendarTblTdTxt);
-    calendarWeekRow.appendChild(calendarTblTd);
-
-    calendarTbl.appendChild(calendarWeekRow);
-
-    //generate three sample week rows
-    for (var i = 0; i < 3; i++) {
+        if (calendarCanvas == 'small') {
+            adjustCalendarHeight();
+        }
         
+}
+
+function populateCalendarTbl(popupCalendar, calendarTbl) {
+//javascript get first day of month as number
+    
+
+    // var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    // var firstDayNum = currentDate.getDay();
+
+    var firstDay = 2;
+
+    //var lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+    //javascript date object get day as number
+
+    // alert(firstDay);
+    // alert(firstDay.getDay());
+
+    var numDaysInMonth = getNumDaysInMonth();
+    var boxCounter = 0;
+    var dayCounter = 0;
+
+    // javascript round up to nearest whole number
+
+    //calculate how many weeks in this month
+    var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
+    var i = 1;
+
+
+
+
+    do {
+      //draw a table row
         //create a week row
         calendarWeekRow = document.createElement("tr");
         calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+        for (var colNum = 1; colNum < 8; colNum++) {
+            boxCounter++; 
+            calendarTblTd = document.createElement("td");
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+            if ((boxCounter<firstDay) || (dayCounter>=numDaysInMonth)) {
+                calendarTblTd.setAttribute("class", "empty-day");
+                var boxText = ' ';
+            } else {
+                dayCounter++;
+                var boxText = dayCounter;
+            }
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+            calendarTblTdTxt = document.createTextNode(boxText);
+            calendarTblTd.appendChild(calendarTblTdTxt);
+            calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt); 
-        calendarWeekRow.appendChild(calendarTblTd);
-
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("xx");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+        }
 
         calendarTbl.appendChild(calendarWeekRow);
+
+
+
+      i++;
     }
+    while (i <= numWeeksThisMonth);
 
-        //sample btm row
-        //create a week row
-        calendarWeekRow = document.createElement("tr");
-        calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("29");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+    // //create a week row
+    // var calendarWeekRow = document.createElement("tr");
+    // calendarWeekRow.setAttribute("class", "tg-datepicker-row");
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("30");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+    // var calendarTblTd = document.createElement("td");
+    // var calendarTblTdTxt = document.createTextNode(" ");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarTblTd.setAttribute("class", "empty-day");
+    // calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode("31");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarWeekRow.appendChild(calendarTblTd);
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode(" ");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarTblTd.setAttribute("class", "empty-day");
+    // calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode(" ");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarTblTd.setAttribute("class", "empty-day");
-        calendarWeekRow.appendChild(calendarTblTd);
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode("1");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode(" ");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarTblTd.setAttribute("class", "empty-day");
-        calendarWeekRow.appendChild(calendarTblTd);
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode("2");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode(" ");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarTblTd.setAttribute("class", "empty-day");
-        calendarWeekRow.appendChild(calendarTblTd);
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode("3");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarTblTd.setAttribute("class", "current-day");
+    // calendarWeekRow.appendChild(calendarTblTd);
 
-        calendarTblTd = document.createElement("td");
-        calendarTblTdTxt = document.createTextNode(" ");
-        calendarTblTd.appendChild(calendarTblTdTxt);
-        calendarTblTd.setAttribute("class", "empty-day");
-        calendarWeekRow.appendChild(calendarTblTd);
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode("4");
+    // calendarTblTd.appendChild(calendarTblTdTxt); 
+    // calendarTblTd.setAttribute("class", "unavailable-day");
+    // calendarWeekRow.appendChild(calendarTblTd);
+
+    // calendarTblTd = document.createElement("td");
+    // calendarTblTdTxt = document.createTextNode("5");
+    // calendarTblTd.appendChild(calendarTblTdTxt);
+    // calendarWeekRow.appendChild(calendarTblTd);
+
+    // calendarTbl.appendChild(calendarWeekRow);
+
+    // //generate three sample week rows
+    // for (var i = 0; i < 3; i++) {
+        
+    //     //create a week row
+    //     calendarWeekRow = document.createElement("tr");
+    //     calendarWeekRow.setAttribute("class", "tg-datepicker-row");
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt); 
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("xx");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTbl.appendChild(calendarWeekRow);
+    // }
+
+    //     //sample btm row
+    //     //create a week row
+    //     calendarWeekRow = document.createElement("tr");
+    //     calendarWeekRow.setAttribute("class", "tg-datepicker-row");
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("29");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("30");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode("31");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode(" ");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarTblTd.setAttribute("class", "empty-day");
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode(" ");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarTblTd.setAttribute("class", "empty-day");
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode(" ");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarTblTd.setAttribute("class", "empty-day");
+    //     calendarWeekRow.appendChild(calendarTblTd);
+
+    //     calendarTblTd = document.createElement("td");
+    //     calendarTblTdTxt = document.createTextNode(" ");
+    //     calendarTblTd.appendChild(calendarTblTdTxt);
+    //     calendarTblTd.setAttribute("class", "empty-day");
+    //     calendarWeekRow.appendChild(calendarTblTd);
 
         calendarTbl.appendChild(calendarWeekRow);
         popupCalendar.appendChild(calendarTbl);
