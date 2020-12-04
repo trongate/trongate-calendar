@@ -146,37 +146,37 @@ function initPopup(elId) {
     calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
 
     var calendarTblTh = document.createElement("th");
-    var calendarTblThTxt = document.createTextNode("Mon");
+    var calendarTblThTxt = document.createTextNode("Mo");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Tue");
+    calendarTblThTxt = document.createTextNode("Tu");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Wed");
+    calendarTblThTxt = document.createTextNode("We");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Thu");
+    calendarTblThTxt = document.createTextNode("Th");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Fri");
+    calendarTblThTxt = document.createTextNode("Fr");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Sat");
+    calendarTblThTxt = document.createTextNode("Sa");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
     calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Sun");
+    calendarTblThTxt = document.createTextNode("Su");
     calendarTblTh.appendChild(calendarTblThTxt);
     calendarTblTopRow.appendChild(calendarTblTh);
 
@@ -333,23 +333,39 @@ function adjustCalendarHeight() {
     if (intViewportWidth<intViewportHeight) {
         //we should make the calendar height equal to the calendar width
         //targetCalendar.style.height = intViewportWidth*0.92 + 'px';
-        
+
         //fetch all of the popup calendar rows
         var allPopupTblRows = document.getElementsByClassName("tg-datepicker-row");
+        var paddingValue = '1.5em 0.7em';
         for (var i = 0; i < allPopupTblRows.length; i++) {
-            increaseCellPadding(allPopupTblRows[i])
+            increaseCellPadding(allPopupTblRows[i], paddingValue)
         }
 
     } else {
         //we should make the calendar width equal to the calendar height
         targetCalendar.style.maxWidth = '350px';
+
+        var allPopupTblRows = document.getElementsByClassName("tg-datepicker-row");
+        var paddingValue = '1.1em 0.7em';
+        for (var i = 0; i < allPopupTblRows.length; i++) {
+            increaseCellPadding(allPopupTblRows[i], paddingValue)
+
+            // var tblRow = allPopupTblRows[i];
+            // var rowCells = tblRow.children;
+            // for (var i = 0; i < rowCells.length; i++) {
+            //     rowCells[i].style.padding = '4.5em 0.7em';
+            // }
+
+        }
+
     }
 }
 
-function increaseCellPadding(tblRow) {
+function increaseCellPadding(tblRow, paddingValue) {
     var rowCells = tblRow.children;
     for (var i = 0; i < rowCells.length; i++) {
-        rowCells[i].style.padding = '1.5em 0.7em';
+        //rowCells[i].style.padding = '1.5em 0.7em';
+        rowCells[i].style.padding = paddingValue;
     }
 }
 
@@ -392,18 +408,7 @@ function watchScreenSize() {
 window.addEventListener("resize", watchScreenSize);
 watchScreenSize();
 
-setTimeout(() => {
 
-    console.log("initing popup");
-    initPopup('whatever');
-
-}, 2000);
-
-setTimeout(() => {
-
-    destroyCalendars();
-
-}, 4000);
 
 function childOf( node, ancestor ) {
     var child = node;
@@ -451,21 +456,14 @@ pageBody.addEventListener("click", (ev) => {
 </script>
 
 <style>
-#txestDivx {
-    width: 450px;
-    height: 150px;
-    left: 367px;
-    top: 32%;
-    margin-top: 10em;
-    position: relative;
-}
+
 
 #testDiv {
     z-index: 99;
 }
 
 .tg-datepicker {
-    width: 400px;
+    width: 282px;
     border: 1px #36658c solid;
     font-family: Lucida console;
     letter-spacing: 1px;
@@ -478,6 +476,10 @@ pageBody.addEventListener("click", (ev) => {
     font-size: 0.7em;
 }
 
+.tg-datepicker-small-canvas .datepicker-head > div:nth-child(2) {
+    font-size: 1.4em;
+}
+
 table {
     width: 100%;
 }
@@ -488,7 +490,7 @@ th {
 }
 
 th, td {
-    padding: 0.7em;
+    padding: 0.3em 0;
     text-align: center;
 }
 
@@ -543,7 +545,7 @@ tr:nth-child(odd) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 6px;
+    padding: 6px 6px;
 }
 
 .datepicker-head > div:nth-child(odd) {
@@ -551,7 +553,7 @@ tr:nth-child(odd) {
 }
 
 .datepicker-head > div:nth-child(2) {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: bold;
     color: white;
 }
