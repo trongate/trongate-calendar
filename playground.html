@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Testing</h1>
+
+    <input type="text">
+
+    <ul>
+        <li>Read day names array and extract first two chars</li>
+        <li>Have date converted into nice format and added to the input</li>
+        <li>Build a switch statement so that date can format can be changed</li>
+        <li>Date can be changed, knowing d m y</li>
+    </ul>
+
+<script>
+
+    var currentDate = new Date(2000, 2, 15);  //javascript get current date and time
+
+    function createNiceDate(currentDate, localeString, options={}) {
+        // Ref:  https://www.w3schools.com/jsref/jsref_tolocalestring.asp
+        // var niceDate = window.navigator.language;
+        // var niceDate = currentDate.toLocaleString(localeString, options);
+        return niceDate;
+    }
+
+    console.log('it is ');
+    var dateOption = {
+        dateStyle: 'long'
+    }
+
+
+
+
+    var niceDate = createNiceDate(currentDate, 'es-AR', dateOption);
+    console.log(niceDate);
+
+    //   javascript convert locale date to date object
+
+
+</script>
+</body>
+</html>
