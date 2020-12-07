@@ -183,6 +183,9 @@ tr:nth-child(odd) {
 <script>
 var currentDate = new Date;
 var unavailableDays = []; //add your own days as an array
+var weekStartsOn = 0; // 0 = Sunday, 1 = Monday
+var calendarTopRow;
+
 
 //var localeString = 'ru-RU';
 var localeString = 'en-GB';
@@ -193,15 +196,26 @@ var dateFormatObj = {
 }
 var makeInputDisabled = true;
 
+var y = currentDate.getFullYear(); 
+var m = currentDate.getMonth();
+var firstDay = new Date(y, m, 1); 
+var monthStartDayNum = firstDay.getDay();
+
+
+
+
+
+
+
 //please change these settings to suit your language
 var dayNames = [
+    "Sunday",
     "Monday", 
     "Tuesday", 
     "Wednesday", 
     "Thursday", 
     "Friday", 
-    "Saturday", 
-    "Sunday"
+    "Saturday"
 ];
 
 var monthNames = [
@@ -307,43 +321,7 @@ function initPopup(elId) {
     var calendarTbl = document.createElement("table");
 
     //create the top row
-    var calendarTblTopRow = document.createElement("tr");
-    calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
-
-    var calendarTblTh = document.createElement("th");
-    var calendarTblThTxt = document.createTextNode("Mo");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Tu");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("We");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Th");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Fr");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Sa");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
-
-    calendarTblTh = document.createElement("th");
-    calendarTblThTxt = document.createTextNode("Su");
-    calendarTblTh.appendChild(calendarTblThTxt);
-    calendarTblTopRow.appendChild(calendarTblTh);
+    
 
     calendarTbl.appendChild(calendarTblTopRow);
 
@@ -795,8 +773,45 @@ function changeMonth(direction) {
     
 }
 
+function buildTopRow() {
 
+    if (weekStartsOn == 1) {
+        var dayZero = dayNames[0];
+        dayNames.shift();
+        dayNames.push(dayZero);
+    }
+
+    var calendarTblTopRow = document.createElement("tr");
+    calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
+
+    for (var i = 0; i <= 6; i++) {
+        var dayLabel = dayNames[i].substring(0, 2);
+        var calendarTblTh = document.createElement("th");
+        var calendarTblThTxt = document.createTextNode(dayLabel);
+        calendarTblTh.appendChild(calendarTblThTxt);
+        calendarTblTopRow.appendChild(calendarTblTh);
+    }
+
+    return calendarTblTopRow;
+
+}
+
+var calendarTblTopRow = buildTopRow();
 populateInput('whatever');
+
+
+
+
+
+// document.addEventListener('keyup', logKey);
+
+// function logKey(e) {
+//     console.log(e.code);
+// }
+
+
+
+
 </script>
 </body>
 </html>
