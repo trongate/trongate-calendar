@@ -185,7 +185,9 @@ var currentDate = new Date;
 var unavailableDays = []; //add your own days as an array
 var weekStartsOn = 0; // 0 = Sunday, 1 = Monday
 var calendarTopRow;
-
+var newPopupCalendar;
+var calendarTbl;
+var calendarTblTopRow;
 
 //var localeString = 'ru-RU';
 var localeString = 'en-GB';
@@ -196,10 +198,7 @@ var dateFormatObj = {
 }
 var makeInputDisabled = true;
 
-var y = currentDate.getFullYear(); 
-var m = currentDate.getMonth();
-var firstDay = new Date(y, m, 1); 
-var monthStartDayNum = firstDay.getDay();
+
 
 
 
@@ -242,6 +241,7 @@ console.log(monthNames);
 function getNumDaysInMonth() {
   var theMonth = currentDate.getMonth()+1; // Here January is 0 based
   var theYear = currentDate.getFullYear();
+  console.log('GETTING NUM DAYS IN MONTH FOR ' + theMonth + ' OF ' + theYear);
   return new Date(theYear, theMonth, 0).getDate();
 }
 
@@ -256,7 +256,7 @@ function initPopup(elId) {
 
     destroyCalendars();
 
-    var newPopupCalendar = document.createElement("div");
+    newPopupCalendar = document.createElement("div");
     newPopupCalendar.setAttribute("class", "tg-datepicker");
 
     if (calendarCanvas == 'large') {
@@ -318,7 +318,7 @@ function initPopup(elId) {
     newPopupCalendar.appendChild(calendarHead);
 
     //generate table
-    var calendarTbl = document.createElement("table");
+    calendarTbl = document.createElement("table");
 
     //create the top row
     
@@ -335,12 +335,118 @@ function initPopup(elId) {
         
 }
 
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 function populateCalendarTbl(popupCalendar, calendarTbl) {
+
+
+    removeAllChildNodes(calendarTbl);
+
+    calendarTbl.appendChild(calendarTblTopRow);
+
+
+    var monthStartDayNum = getMonthStartDayNum();
+    var numDaysInMonth = getNumDaysInMonth();
+
+
+
+//    var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
+    var numWeeksThisMonth = (numDaysInMonth/7)+1;
+
+
+    if (weekStartsOn == 1) {
+        var boxCounter = 0;
+    } else {
+        var boxCounter = -1;
+    }
+    
+    var dayCounter = 0;
+
+    var i = 1;
+
+
+    do {
+        //create a week row
+        calendarWeekRow = document.createElement("tr");
+        calendarWeekRow.setAttribute("class", "tg-datepicker-row");
+
+
+
+        for (var colNum = 0; colNum < 7; colNum++) {
+            boxCounter++; 
+            calendarTblTd = document.createElement("td");
+
+            if ((boxCounter<monthStartDayNum) || (dayCounter>=numDaysInMonth)) {
+                calendarTblTd.setAttribute("class", "empty-day");
+                var boxText = ' ';
+            } else {
+                dayCounter++;
+                var boxText = dayCounter;
+            }
+
+            calendarTblTdTxt = document.createTextNode(boxText);
+            calendarTblTd.appendChild(calendarTblTdTxt);
+            calendarWeekRow.appendChild(calendarTblTd);
+            console.log('append vibe');
+
+        }
+
+        calendarTbl.appendChild(calendarWeekRow);
+
+
+
+      i++;
+    }
+    while (i <= numWeeksThisMonth);  
+
+    calendarTbl.appendChild(calendarWeekRow);
+    popupCalendar.appendChild(calendarTbl);  
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function populateCalendarTblOLD(popupCalendar, calendarTbl) {
 //javascript get first day of month as number
     
 
-    // var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    // var firstDayNum = currentDate.getDay();
+    var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    var firstDayNum = currentDate.getDay();
 
     var firstDay = 2;
 
@@ -352,8 +458,7 @@ function populateCalendarTbl(popupCalendar, calendarTbl) {
     // alert(firstDay.getDay());
 
     var numDaysInMonth = getNumDaysInMonth();
-    var boxCounter = 0;
-    var dayCounter = 0;
+
 
     // javascript round up to nearest whole number
 
@@ -361,8 +466,8 @@ function populateCalendarTbl(popupCalendar, calendarTbl) {
     var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
     var i = 1;
 
-
-
+    var boxCounter = 0;
+    var dayCounter = 0;
 
     do {
       //draw a table row
@@ -767,6 +872,8 @@ function changeMonth(direction) {
         targetDiv.innerHTML = niceDate;
         targetDiv.innerHTML+= ' ' + currentDate.getFullYear();
 
+        populateCalendarTbl(newPopupCalendar, calendarTbl);
+
 
     }, 1);
     //
@@ -775,13 +882,14 @@ function changeMonth(direction) {
 
 function buildTopRow() {
 
+
     if (weekStartsOn == 1) {
         var dayZero = dayNames[0];
         dayNames.shift();
         dayNames.push(dayZero);
     }
 
-    var calendarTblTopRow = document.createElement("tr");
+    calendarTblTopRow = document.createElement("tr");
     calendarTblTopRow.setAttribute("class", "tg-datepicker-row");
 
     for (var i = 0; i <= 6; i++) {
@@ -810,7 +918,13 @@ populateInput('whatever');
 // }
 
 
-
+function getMonthStartDayNum() {
+    var y = currentDate.getFullYear(); 
+    var m = currentDate.getMonth();
+    var firstDay = new Date(y, m, 1); 
+    var monthStartDayNum = firstDay.getDay();
+    return monthStartDayNum;
+}
 
 </script>
 </body>
