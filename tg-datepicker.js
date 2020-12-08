@@ -31,8 +31,6 @@ var monthNames = [
     "December"
 ];
 
-var makeInputDisabled = true;
-
 // SETTINGS END : DO NOT EDIT BELOW THIS LINE!!!
 
 function _(elRef) {
@@ -267,6 +265,16 @@ function refreshDatepickerHead() {
     targetDiv.innerHTML = datepickerHeadline;
 }
 
+function changeYear(newYear) {
+    refreshDatepickerHead();
+    var childNodes = datepickerCalendar.childNodes;
+    childNodes[i].remove();
+
+    //build and populate calendar table   
+    var datepickerTbl = buildAndPopulateDatepickerTbl();
+    datepickerCalendar.appendChild(datepickerTbl);
+}
+
 function changeMonth(direction) {
 
     var m = currentDate.getMonth();
@@ -393,28 +401,92 @@ function clickDay(dayNum) {
 }
 
 
+//make the input fields (for datepickers) 'disabled'
+var datepickerInputs = document.getElementsByClassName("datepicker");
+var originalValue;
+for (var i = 0; i < datepickerInputs.length; i++) {
+
+    var targetEl = datepickerInputs[i];
+    var pressedKey;
+
+    // javascript get character that was pressed
+ 
+    var originalValue = '';
+    datepickerInputs[i].addEventListener("mousedown", (ev) => {
+        originalValue = targetEl.value;
+    });
+
+    datepickerInputs[i].addEventListener("blur", (ev) => {
+
+        var isNumber = /^[0-9]$/i.test(pressedKey);
+
+        if (isNumber !== true) {
+            targetEl.value = originalValue;
+        } else {
+            //attempt to extract the year from the form input field
+            var extractedYear = attemptExtractYear(targetEl.value);
+
+            if (extractedYear !== false) {
+                //we have a valid year in the form input field
+                currentDate.setYear(extractedYear);
+                changeYear(extractedYear);
+            }
+
+        }
+
+    });
+
+    datepickerInputs[i].addEventListener("keyup", (ev) => {
+        pressedKey = ev.key;
+
+        var isNumber = /^[0-9]$/i.test(pressedKey);
+
+        if (isNumber !== true) {
+            targetEl.value = originalValue;
+        } else {
+
+            //attempt to extract the year from the form input field
+            var extractedYear = attemptExtractYear(targetEl.value);
+
+            if (extractedYear !== false) {
+                //we have a valid year in the form input field
+                currentDate.setYear(extractedYear);
+                changeYear(extractedYear);
+            }
+
+
+        }
+        
+    });
+
+}
 
 
 
 
+function attemptExtractYear(text) {
+    var score = 0;
+    var extractedYear = '';
 
+    for (var x = 0; x < text.length; x++) {
+        var c = text.charAt(x);
+        var isNumber = /^[0-9]$/i.test(c);
 
+        if (isNumber == true) {
+            score++;
+            extractedYear+= c;
+        } else {
+            score = 0;
+            extractedYear = '';
+        }
 
+        if (score == 4) {
+            return extractedYear;
+        }
 
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return false;
+}
 
 buildTopRow();
