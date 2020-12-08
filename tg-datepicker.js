@@ -1,5 +1,5 @@
 // SETTINGS START : PLEASE FEEL FREE TO CHANGE THE SETTINGS BELOW THIS LINE:
-var weekStartsOn = 0; // 0 = Sunday, 1 = Monday
+var weekStartsOn = 1; // 0 = Sunday, 1 = Monday
 var localeString = 'en-GB'; //details:  https://www.w3schools.com/jsref/jsref_tolocalestring.asp
 var dateFormatObj = {
     dateStyle: 'long'
@@ -32,8 +32,8 @@ var monthNames = [
 ];
 
 
-var unavailableBefore = new Date(2020, 11, 4);
-var unavailableAfter = new Date(2021, 2, 12);
+var unavailableBefore;
+var unavailableAfter;
 
 
 // SETTINGS END : DO NOT EDIT BELOW THIS LINE!!!
@@ -194,7 +194,7 @@ function buildAndPopulateDatepickerTbl() {
     var numDaysInMonth = getNumDaysInMonth();
     var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
 
-    if ((monthStartDayNum>0) && (numWeeksThisMonth<5)) {
+    if ((monthStartDayNum>weekStartsOn) && (numWeeksThisMonth<5)) {
         numWeeksThisMonth = 5;
     }
 
@@ -524,17 +524,26 @@ function attemptExtractYear(text) {
 
 function testForIsAvailable(dayCounter) {
 
-    //unavailableBefore  unavailableAfter
-
     //turn the day (to be tested) into a date object
     var boxDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayCounter);
 
-    if ((boxDate<=unavailableBefore) || (boxDate>=unavailableAfter)) {
-        return false;
-    } else {
-        return true;
+    if(typeof unavailableBefore == 'object') {
+
+        if (boxDate<=unavailableBefore) {
+            return false;
+        }
+
     }
 
+    if (typeof unavailableAfter == 'object') {
+
+        if (boxDate>=unavailableAfter) {
+            return false;
+        }
+
+    }
+
+    return true;
 }
 
 function testForCurrentDay(dayCounter) {
