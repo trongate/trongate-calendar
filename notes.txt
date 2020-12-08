@@ -1,7 +1,5 @@
 TO DO
 
-*  change input field upon click
-*  do not allow text input of the input fields
 *  change colour of 'current date' box
 *  get overlay working
 *  build feature that lets user change year

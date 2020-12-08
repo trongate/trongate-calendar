@@ -188,6 +188,10 @@ function buildAndPopulateDatepickerTbl() {
     var numDaysInMonth = getNumDaysInMonth();
     var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
 
+    if ((monthStartDayNum>0) && (numWeeksThisMonth<5)) {
+        numWeeksThisMonth = 5;
+    }
+
     if (weekStartsOn == 1) {
         var boxCounter = 0;
     } else {
@@ -490,3 +494,17 @@ function attemptExtractYear(text) {
 }
 
 buildTopRow();
+
+
+
+
+
+
+var testDate = new Date;
+testDate.setYear(2025);
+testDate.setMonth(1);
+setTimeout(() => {
+    currentDate = testDate;
+
+}, 1);
+
