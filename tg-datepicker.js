@@ -31,6 +31,11 @@ var monthNames = [
     "December"
 ];
 
+
+var unavailableBefore = new Date(2020, 11, 4);
+var unavailableAfter = new Date(2021, 2, 12);
+
+
 // SETTINGS END : DO NOT EDIT BELOW THIS LINE!!!
 
 function _(elRef) {
@@ -203,6 +208,7 @@ function buildAndPopulateDatepickerTbl() {
 
     var i = 1;
     var isCurrentDay = false;
+    var isAvailable = false;
 
     do {
         //create a week row
@@ -220,16 +226,27 @@ function buildAndPopulateDatepickerTbl() {
                 dayCounter++;
                 var boxText = dayCounter;
 
-                if (isCurrentDay !== true) {
-                    isCurrentDay = testForCurrentDay(dayCounter);
-                }
-                
-                if (isCurrentDay == true) {
-                    calendarTblTd.setAttribute("class", "current-day");
-                    isCurrentDay = false;
+                //test to see if this box is clickable (available)
+                isAvailable = testForIsAvailable(dayCounter);
+
+                if (isAvailable == false) {
+                    calendarTblTd.setAttribute("class", "unavailable-day");
+                } else {
+
+                    if (isCurrentDay !== true) {
+                        isCurrentDay = testForCurrentDay(dayCounter);
+                    }
+                    
+                    if (isCurrentDay == true) {
+                        calendarTblTd.setAttribute("class", "current-day");
+                        isCurrentDay = false;
+                    }
+
+                    calendarTblTd.setAttribute("onclick", "clickDay('" + boxText + "')")
+
                 }
 
-                calendarTblTd.setAttribute("onclick", "clickDay('" + boxText + "')")
+
             }
 
             var calendarTblTdTxt = document.createTextNode(boxText);
@@ -503,6 +520,21 @@ function attemptExtractYear(text) {
     }
 
     return false;
+}
+
+function testForIsAvailable(dayCounter) {
+
+    //unavailableBefore  unavailableAfter
+
+    //turn the day (to be tested) into a date object
+    var boxDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayCounter);
+
+    if ((boxDate<=unavailableBefore) || (boxDate>=unavailableAfter)) {
+        return false;
+    } else {
+        return true;
+    }
+
 }
 
 function testForCurrentDay(dayCounter) {
