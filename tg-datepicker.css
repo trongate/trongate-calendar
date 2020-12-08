@@ -1,0 +1,130 @@
+#testDiv {
+    z-index: 99;
+}
+
+.datepicker-calendar {
+    width: 282px;
+    border: 1px #36658c solid;
+    font-family: Lucida console;
+    letter-spacing: 1px;
+    background-color: white;
+    position: absolute;
+}
+
+.tg-datepicker-small-canvas {
+    width: 96%;
+    font-size: 0.7em;
+}
+
+.tg-datepicker-small-canvas .datepicker-head > div:nth-child(2) {
+    font-size: 1.4em;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: #333;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 0.3em 0;
+    text-align: center;
+}
+
+td {
+    background-color: #4682b424;
+    border: 1px #829eb59e solid;
+}
+
+td:hover:not(.empty-day):not(.unavailable-day):not(.current-day) {
+    background-color: #cfdfec;
+}
+
+.empty-day {
+    background-color: white;
+    border: 1px white solid;
+}
+
+.unavailable-day {
+    background-color: #fff;
+    color: silver;
+    cursor: default !important;
+}
+
+.unavailabe-day, .empty-day {
+    cursor: default !important;
+}
+
+.current-day {
+    background-color: SteelBlue;
+    color: white;
+}
+
+.current-day:hover {
+    background-color: #346893;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+tr:hover, tr:nth-child(odd):hover {
+    bxackground-color: #fdfdea;
+}
+
+tr:nth-child(odd) {
+    bxackground-color: #f3f3f3;
+}
+
+.datepicker-head {
+    background-color: SteelBlue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 6px;
+}
+
+.datepicker-head > div:nth-child(odd) {
+    cursor: pointer;
+}
+
+.datepicker-head > div:nth-child(2) {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+}
+
+.popup-arrow {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: SteelBlue;
+}
+
+.flip-arrow {
+    transform: rotate(180deg);
+    top: 1px;
+    left: 0px;
+    position: relative;
+}
+
+#tg-calendar-overlay {
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.8);
+    z-index:5;
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

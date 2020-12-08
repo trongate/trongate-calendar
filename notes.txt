@@ -1,0 +1,30 @@
+TO DO
+
+*  change input field upon click
+*  change colour of 'current date' box
+*  figure out why it looks duff on 4 week months - e.g., Feb 2021
+*  get calendar closing upon clicking elsewhere
+*  do not allow text input of the input fields
+*  build feature that lets user change year
+*  get overlay working
+*  test
+
+--------------------------------------------------------
+BUILD A TIME PICKER <-------
+--------------------------------------------------------
+
+BUILD A CALENDAR WITH A TIME PICKER <-------------------
+
+--------------------------------------------------------
+BUILD A DATE RANGE SELECTOR
+--------------------------------------------------------
+BUILD A DATE RANGE SELECTOR WITH TIME SELECTORS.               7 days
+
+-----------------------------------------------------------------
+> uploader, date pickers, time pickers, date range pickers,
+---> build new admin panel for the Trongate Desktop app.       14 days
+-----------------------------------------------------------------
+
+-->  FINISH THE DESKTOP APP  (2 - 3 weeks)                     - 6 wks
+
+
