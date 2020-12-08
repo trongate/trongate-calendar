@@ -48,7 +48,7 @@ function _(elRef) {
 
 var currentDate = new Date;
 var datepickerCalendar;
-
+var clickedEl;
 
 // var datepickerTbl;
 // var datepickerTopRow;
@@ -85,6 +85,7 @@ var datepickers = _('.datepicker');
 for (var i = 0; i < datepickers.length; i++) {
     datepickers[i].addEventListener("click", (ev) => {
         //build a datepickerCalendar and then add it to the page * (taking canvas size into account)
+        clickedEl = ev.target;
         buildDatepickerCalendar(ev.target);
     });
 }
@@ -214,6 +215,7 @@ function buildAndPopulateDatepickerTbl() {
             } else {
                 dayCounter++;
                 var boxText = dayCounter;
+                calendarTblTd.setAttribute("onclick", "clickDay('" + boxText + "')")
             }
 
             var calendarTblTdTxt = document.createTextNode(boxText);
@@ -226,10 +228,6 @@ function buildAndPopulateDatepickerTbl() {
       i++;
     }
     while (i <= numWeeksThisMonth);  
-
-    // console.log(`The month start day number is ${monthStartDayNum}`);
-    // console.log(`The numDaysInMonth is ${numDaysInMonth}`);
-    // console.log(`The number of weeks this month is ${numWeeksThisMonth}`);
 
     return datepickerTbl;
 
@@ -358,9 +356,41 @@ function destroyCalendars() {
 
 }
 
+function createNiceDate(targetDateObj) {
+    // Ref:  https://www.w3schools.com/jsref/jsref_tolocalestring.asp
+    // var niceDate = window.navigator.language;
 
+    if (typeof(dateFormatObj) !== 'undefined') {
+        var niceDate = targetDateObj.toLocaleString(localeString, dateFormatObj);
+    } else {
+       
+        var m = targetDateObj.getMonth()+1;
+        var d =  targetDateObj.getDate();
 
+        if (m < 10) {
+            m = '0' + m
+        }
 
+        if (d < 10) {
+            d = '0' + d
+        }
+
+        var niceDate = m + '/' + d + '/' + targetDateObj.getFullYear();
+
+    }
+    
+    return niceDate;
+}
+
+function clickDay(dayNum) {
+    var clickedDay = currentDate;
+    clickedDay.setDate(dayNum);
+    var niceDate = createNiceDate(clickedDay);
+    
+    //update the textfield so that it has the nice date
+    clickedEl.value = niceDate;
+    destroyDatepickerCalendars(); 
+}
 
 
 
