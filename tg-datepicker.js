@@ -45,6 +45,7 @@ function _(elRef) {
 }
 
 var currentDate = new Date;
+var todayDate = new Date;
 var datepickerCalendar;
 var clickedEl;
 
@@ -201,6 +202,7 @@ function buildAndPopulateDatepickerTbl() {
     var dayCounter = 0;
 
     var i = 1;
+    var isCurrentDay = false;
 
     do {
         //create a week row
@@ -217,6 +219,16 @@ function buildAndPopulateDatepickerTbl() {
             } else {
                 dayCounter++;
                 var boxText = dayCounter;
+
+                if (isCurrentDay !== true) {
+                    isCurrentDay = testForCurrentDay(dayCounter);
+                }
+                
+                if (isCurrentDay == true) {
+                    calendarTblTd.setAttribute("class", "current-day");
+                    isCurrentDay = false;
+                }
+
                 calendarTblTd.setAttribute("onclick", "clickDay('" + boxText + "')")
             }
 
@@ -493,18 +505,17 @@ function attemptExtractYear(text) {
     return false;
 }
 
+function testForCurrentDay(dayCounter) {
+
+    var todayStr = todayDate.getDate() + ' ' + todayDate.getMonth() + ' ' + todayDate.getFullYear();
+    var currentDateStr = dayCounter + ' ' + currentDate.getMonth() + ' ' + currentDate.getFullYear();
+
+    if (todayStr == currentDateStr) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
 buildTopRow();
-
-
-
-
-
-
-var testDate = new Date;
-testDate.setYear(2025);
-testDate.setMonth(1);
-setTimeout(() => {
-    currentDate = testDate;
-
-}, 1);
-

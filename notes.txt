@@ -1,9 +1,6 @@
 TO DO
 
-*  change colour of 'current date' box
 *  get overlay working
-*  build feature that lets user change year
-*  test
 
 --------------------------------------------------------
 BUILD A TIME PICKER <-------
