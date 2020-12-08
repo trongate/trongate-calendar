@@ -1,6 +1,5 @@
 TO DO
 
-*  get calendar closing upon clicking elsewhere
 *  do not allow text input of the input fields
 *  change colour of 'current date' box
 *  get overlay working

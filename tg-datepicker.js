@@ -304,7 +304,59 @@ function getNumDaysInMonth() {
     return new Date(theYear, theMonth, 0).getDate();
 }
 
+function childOf( node, ancestor ) {
+    var child = node;
+    while (child !== null) {
+        if (child === ancestor) return true;
+        child = child.parentNode;
+    }
+    return false;   
+}
 
+var pageBody = document.getElementsByTagName("body")[0];
+pageBody.addEventListener("click", (ev) => {
+
+
+    var datepickerCalendars = _(".datepicker-calendar");
+
+    if (datepickerCalendars.length>0) {
+
+        var clickedEl = ev.target;
+
+        //does the clickedEl contain the datepicker class?
+        if (clickedEl.classList.contains("datepicker")) {
+            return;
+        }
+
+        var targetAncestor = datepickerCalendars[0];
+        var isChild = childOf(clickedEl, targetAncestor);
+
+        if (isChild !== true) {
+            destroyCalendars();
+        }
+    }
+
+});
+
+function destroyCalendars() {
+
+    var datepickerCalendars = _(".datepicker-calendar");
+
+    if (datepickerCanvas == 'small') {
+
+        if (datepickerCalendars.length>0) {
+            document.getElementById("tg-calendar-overlay").remove();
+        }
+        
+    } else {
+
+        while(datepickerCalendars.length>0) {
+            datepickerCalendars[0].remove();
+        }
+
+    }
+
+}
 
 
 
