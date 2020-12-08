@@ -1,5 +1,5 @@
 // SETTINGS START : PLEASE FEEL FREE TO CHANGE THE SETTINGS BELOW THIS LINE:
-var weekStartsOn = 1; // 0 = Sunday, 1 = Monday
+var weekStartsOn = 0; // 0 = Sunday, 1 = Monday
 var localeString = 'en-GB'; //details:  https://www.w3schools.com/jsref/jsref_tolocalestring.asp
 var dateFormatObj = {
     dateStyle: 'long'
@@ -187,7 +187,7 @@ function buildAndPopulateDatepickerTbl() {
 
     var monthStartDayNum = getMonthStartDayNum();
     var numDaysInMonth = getNumDaysInMonth();
-    var numWeeksThisMonth = (numDaysInMonth/7)+1;
+    var numWeeksThisMonth = Math.ceil(numDaysInMonth/7);
 
     if (weekStartsOn == 1) {
         var boxCounter = 0;
